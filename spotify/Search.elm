@@ -156,6 +156,17 @@ searchUrl query =
 decodeAnswers : Json.Decoder (List Answer)
 decodeAnswers =
   let
+    imageUrlDecoder = ("url" := Json.string)
+    imagesDecoder = Json.list imageUrlDecoder --Decoder List String
+    firstImageDecoder 
     albumDecoder = Json.object2 Answer ("name" := Json.string) ("href" := Json.string)
   in
     (Json.at ["albums", "items"] (Json.list albumDecoder))
+
+
+getFirstDecoder : List String -> Decoder String
+getFirstDecoder myList =
+  let 
+    myString = Maybe.withDefault "default" (List.head myList)
+  in
+    Decoder.
