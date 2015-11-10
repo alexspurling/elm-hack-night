@@ -22,7 +22,8 @@ type alias Model =
 
 
 type alias Answer =
-    { name : String
+    { name : String,
+      img : String
     }
 
 
@@ -155,7 +156,6 @@ searchUrl query =
 decodeAnswers : Json.Decoder (List Answer)
 decodeAnswers =
   let
-    albumName =
-      Json.map Answer ("name" := Json.string)
+    albumDecoder = Json.object2 Answer ("name" := Json.string) ("href" := Json.string)
   in
-    (Json.at ["albums", "items"] (Json.list albumName))
+    (Json.at ["albums", "items"] (Json.list albumDecoder))
